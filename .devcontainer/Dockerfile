@@ -1,5 +1,5 @@
-# Use the Microsoft Ubuntu base image
-FROM mcr.microsoft.com/devcontainers/base:noble
+# Use the x86_64 Microsoft Ubuntu Noble base image
+FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/base:noble
 
 # Update and install gnupg
 RUN apt-get update \
