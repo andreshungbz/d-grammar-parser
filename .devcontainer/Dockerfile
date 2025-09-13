@@ -1,12 +1,15 @@
 # Use the Microsoft Ubuntu base image
 FROM mcr.microsoft.com/devcontainers/base:noble
 
-# Update
-RUN apt-get update && rm -rf /var/lib/apt/lists/*
+# Update and install gnupg
+RUN apt-get update \
+    && apt-get install -y gnupg \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set user to vscode to install dlang there
-USER vscode
+# Add D language apt repository
+RUN wget https://netcologne.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list \
+    && apt-get update --allow-insecure-repositories \
+    && apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
 
-# Install DMD and LCD compilers
-RUN curl https://dlang.org/install.sh | bash -s dmd \
-  && curl https://dlang.org/install.sh | bash -s ldc
+# Install dmd, ldc, and dub
+RUN apt-get update && sudo apt-get install -y dmd-compiler dub ldc
