@@ -1,4 +1,3 @@
-/// Associative array of the grammar program specification
 module grammar;
 
 string[string] rules = [
