@@ -1,9 +1,0 @@
-{
-  "authors": ["Andres Hung"],
-  "copyright": "Copyright © 2025, Andres Hung",
-  "dependencies": {},
-  "description": "Lexical and syntax analysis demonstration for a simple grammar, written in the D programming language",
-  "license": "MIT",
-  "name": "d-grammar-parser",
-  "targetPath": "bin"
-}

@@ -1,0 +1,6 @@
+name "d-grammar-parser"
+description "Lexical and syntax analysis demonstration for a simple grammar, written in the D programming language"
+authors "Andres Hung"
+copyright "Copyright © 2025, Andres Hung"
+license "MIT"
+targetPath "bin"
