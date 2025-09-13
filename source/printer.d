@@ -5,16 +5,9 @@ module printer;
 import std.format;
 import std.stdio;
 
-// grammar
-string[string] rules = [
-  "<graph>": "HI <draw> BYE",
-  "<draw>": "<action> | <action> ; <draw>",
-  "<action>": "bar <x><y>,<y> | line <x><y>,<x><y> | fill <x><y>",
-  "<x>": "A | B | C | D | E",
-  "<y>": "1 | 2 | 3 | 4 | 5"
-];
-
-/// printIntroduction displays informatino about the program and project.
+/**
+printIntroduction displays information about the program and project.
+*/
 void printIntroduction()
 {
   string[string] programIntroEntries = [
@@ -30,8 +23,12 @@ void printIntroduction()
   writeln();
 }
 
-/// printGrammar displays the BNF grammar rules according to the program specifications.
-void printGrammar()
+/**
+printGrammar displays the BNF grammar rules according to the program specifications.
+Params:
+  rules = an associative array of string non-terminals to string derivations.
+*/
+void printGrammar(string[string] rules)
 {
   // print headers
   writefln("[BNF/Context-free Grammar]");

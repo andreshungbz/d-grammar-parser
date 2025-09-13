@@ -2,12 +2,13 @@
 
 import std.stdio;
 import std.string;
+import grammar;
 import printer;
 
 void main()
 {
 	printIntroduction();
-	printGrammar();
+	printGrammar(grammar.rules);
 
 	// continually prompt for input
 	while (true)
