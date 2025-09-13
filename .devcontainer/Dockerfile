@@ -12,7 +12,7 @@ RUN wget https://netcologne.dl.sourceforge.net/project/d-apt/files/d-apt.list -O
     && apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
 
 # Install dmd, ldc, and dub
-RUN apt-get update && sudo apt-get install -y dmd-compiler dub ldc
+RUN apt-get update && apt-get install -y dmd-compiler dub ldc
 
 # Install gdb and lldb for debugging
 RUN apt-get install -y gdb lldb
