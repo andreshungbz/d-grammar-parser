@@ -6,7 +6,7 @@ import std.format;
 import std.stdio;
 
 /**
-printIntroduction displays information about the program and project.
+Displays information about the program and project.
 */
 void introduction()
 {
@@ -24,7 +24,7 @@ void introduction()
 }
 
 /**
-printGrammar displays the BNF grammar rules according to the program specifications.
+Displays the BNF grammar rules according to the program specifications.
 Params:
   rules = an associative array of string non-terminals to string derivations.
 */
