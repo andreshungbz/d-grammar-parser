@@ -1,8 +1,6 @@
 import std.format;
 import std.stdio;
 
-string programPrefix = "[d-grammar-parser]";
-
 /// printIntroduction displays informatino about the program and project.
 void printIntroduction()
 {
