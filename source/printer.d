@@ -33,7 +33,8 @@ void printGrammar()
     ["<y>", "-->", "1 | 2 | 3 | 4 | 5"]
   ];
 
-  writefln("[BNF/Context-free Grammar]"); // print headers
+  // print headers
+  writefln("[BNF/Context-free Grammar]");
   writeln(format("%-15s %-5s %-50s", headers[0], headers[1], headers[2]));
 
   // print rules
