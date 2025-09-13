@@ -15,9 +15,11 @@ void introduction()
     "[GitHub]": "https://github.com/andreshungbz/d-grammar-parser"
   ];
 
-  foreach (entry, description; programIntroEntries)
+  // print entries in order
+  string[] orderedKeys = ["[d-grammar-parser]", "[GitHub]"];
+  foreach (key; orderedKeys)
   {
-    writeln(format("%-20s %-50s", entry, description));
+    writeln(format("%-20s %-50s", key, programIntroEntries[key]));
   }
 
   writeln();
@@ -34,10 +36,11 @@ void grammar(string[string] rules)
   writefln("[BNF/Context-free Grammar]");
   writeln(format("%-15s %-5s %-50s", "[Non-Terminal]", "-->", "[Derivation]"));
 
-  // print rules
-  foreach (nonTerminal, derivation; rules)
+  // print rules in order
+  string[] orderedKeys = ["<graph>", "<draw>", "<action>", "<x>", "<y>"];
+  foreach (key; orderedKeys)
   {
-    writeln(format("%-15s %-5s %-50s", nonTerminal, "-->", derivation));
+    writeln(format("%-15s %-5s %-50s", key, "-->", rules[key]));
   }
 
   writeln();
