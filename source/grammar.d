@@ -1,3 +1,5 @@
+// Grammar definition
+
 module grammar;
 
 string[string] rules = [
