@@ -1,6 +1,6 @@
-// The printer module contains printing functions for introdction, grammar, etc.
+// The print module contains printing functions for introdction, grammar, etc.
 
-module printer;
+module print;
 
 import std.format;
 import std.stdio;
@@ -8,7 +8,7 @@ import std.stdio;
 /**
 printIntroduction displays information about the program and project.
 */
-void printIntroduction()
+void introduction()
 {
   string[string] programIntroEntries = [
     "[d-grammar-parser]": "Simple lexical/syntax analyzer written in D",
@@ -28,7 +28,7 @@ printGrammar displays the BNF grammar rules according to the program specificati
 Params:
   rules = an associative array of string non-terminals to string derivations.
 */
-void printGrammar(string[string] rules)
+void grammar(string[string] rules)
 {
   // print headers
   writefln("[BNF/Context-free Grammar]");
