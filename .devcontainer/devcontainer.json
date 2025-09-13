@@ -17,7 +17,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "webfreak.code-d"
+        "webfreak.code-d",
+        "ms-vscode.cpptools-extension-pack"
       ]
     }
   }
