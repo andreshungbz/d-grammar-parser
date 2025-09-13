@@ -10,12 +10,7 @@ void printIntroduction()
 {
   string[][] programIntroEntries = [
     ["[d-grammar-parser]", "Simple lexical/syntax analyzer written in D"],
-    ["[CMPS3111-P1-25S1]", "Programming Languages - Program 1"],
-    [
-      "[Group Members]",
-      "Andres Hung, Amir Gonzalez, Renee Banner, Joseph Koop, Adolfo Dueñas"
-    ],
-    ["[Due Date]", "October 2, 2025"]
+    ["[GitHub]", "https://github.com/andreshungbz/d-grammar-parser"]
   ];
 
   foreach (string[] entry; programIntroEntries)
