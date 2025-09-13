@@ -1,0 +1,8 @@
+{
+  "d.dmdPath": "/usr/bin/dmd",
+  "editor.formatOnSave": true,
+  "[d]": {
+    "editor.defaultFormatter": "webfreak.code-d",
+    "editor.formatOnSave": true
+  }
+}
