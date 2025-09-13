@@ -8,7 +8,7 @@ import print;
 void main()
 {
 	print.introduction();
-	print.grammar(rules);
+	print.grammar(grammar.rules);
 
 	// continually prompt for input
 	while (true)
