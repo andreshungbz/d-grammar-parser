@@ -1,6 +1,6 @@
 // Main program
 
-import syntax.grammar;
+import language.grammar;
 import utility.print;
 
 import std.stdio;
@@ -9,7 +9,7 @@ import std.string;
 void main()
 {
 	utility.print.introduction();
-	utility.print.grammar(syntax.grammar.rules);
+	utility.print.grammar(language.grammar.rules);
 
 	// continually prompt for input
 	while (true)

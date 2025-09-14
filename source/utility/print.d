@@ -2,7 +2,7 @@
 
 module utility.print;
 
-import syntax.grammar;
+import language.grammar;
 
 import std.format;
 import std.stdio;

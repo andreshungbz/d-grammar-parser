@@ -1,11 +1,11 @@
 // Grammar definition
 
-module syntax.grammar;
+module language.grammar;
 
 import std.algorithm : map;
 import std.array : join;
 
-import syntax.symbol;
+import language.symbols;
 
 /** 
  * Alternative represents an options that a nonterminal can derive to, consisting of symbols.
