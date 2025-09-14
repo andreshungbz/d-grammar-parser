@@ -2,9 +2,10 @@
 
 module print;
 
+import syntax.grammar;
+
 import std.format;
 import std.stdio;
-import syntax.grammar;
 
 /**
  * Displays information about the program and project.

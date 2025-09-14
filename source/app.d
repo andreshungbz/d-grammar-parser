@@ -1,9 +1,10 @@
 // Main program
 
+import print;
+import syntax.grammar;
+
 import std.stdio;
 import std.string;
-import syntax.grammar;
-import print;
 
 void main()
 {

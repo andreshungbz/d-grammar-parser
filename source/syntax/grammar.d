@@ -2,9 +2,10 @@
 
 module syntax.grammar;
 
-import syntax.symbols;
 import std.algorithm : map;
 import std.array : join;
+
+import syntax.symbols;
 
 /** 
  * Alternative represents an options that a nonterminal can derive to, consisting of symbols.
