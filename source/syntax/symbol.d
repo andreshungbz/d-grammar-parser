@@ -1,4 +1,4 @@
-module syntax.symbols;
+module syntax.symbol;
 
 enum Terminal : string
 {

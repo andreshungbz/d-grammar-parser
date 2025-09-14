@@ -1,6 +1,6 @@
 module syntax.token;
 
-import syntax.symbols;
+import syntax.symbol;
 
 import std.conv : to;
 
