@@ -4,7 +4,9 @@ import syntax.symbols;
 
 import std.conv : to;
 
-/// Represents a single token produced by the lexer.
+/** 
+ * Token holds the kind of terminal, the lexeme, and the position
+ */
 struct Token
 {
   Terminal kind;
