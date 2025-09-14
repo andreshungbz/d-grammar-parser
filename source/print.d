@@ -4,10 +4,11 @@ module print;
 
 import std.format;
 import std.stdio;
+import syntax.grammar;
 
 /**
-Displays information about the program and project.
-*/
+ * Displays information about the program and project.
+ */
 void introduction()
 {
   string[string] programIntroEntries = [
@@ -26,21 +27,29 @@ void introduction()
 }
 
 /**
-Displays the BNF grammar rules according to the program specifications.
-Params:
-  rules = an associative array of string non-terminals to string derivations.
+* Displays the BNF grammar rules according to the program specifications.
+* Params:
+*   rules = an array of Rule structs
 */
-void grammar(string[string] rules)
+void grammar(Rule[] rules)
 {
+  import std.algorithm : joiner, map;
+  import std.conv : to;
+
   // print headers
   writefln("[BNF/Context-free Grammar]");
   writeln(format("%-15s %-5s %-50s", "[Non-Terminal]", "-->", "[Derivation]"));
 
-  // print rules in order
-  string[] orderedKeys = ["<graph>", "<draw>", "<action>", "<x>", "<y>"];
-  foreach (key; orderedKeys)
+  // print each rule
+  foreach (rule; rules)
   {
-    writeln(format("%-15s %-5s %-50s", key, "-->", rules[key]));
+    // create a string of alternatives separated by |
+    string alternatives = rule.alternatives
+      .map!(p => p.toString)
+      .joiner(" | ")
+      .to!string;
+
+    writeln(format("%-15s %-5s %-50s", rule.nonTerminal, "-->", alternatives));
   }
 
   writeln();
