@@ -2,6 +2,7 @@
 
 module syntax.grammar;
 
+import syntax.symbols;
 import std.algorithm : map;
 import std.array : join;
 
@@ -41,30 +42,35 @@ struct Rule
  * BNF rules defined in the program specification.
  */
 Rule[5] rules = [
-  Rule("<graph>", [
-      Alternative(["HI", "<draw>", "BYE"])
+  Rule(NonTerminal.GRAPH, [
+      Alternative([Terminal.HI, NonTerminal.DRAW, Terminal.BYE])
     ]),
-  Rule("<draw>", [
-      Alternative(["<action>"]),
-      Alternative(["<action>", ";", "<draw>"])
+  Rule(NonTerminal.DRAW, [
+      Alternative([NonTerminal.ACTION]),
+      Alternative([NonTerminal.ACTION, Terminal.SEMICOLON, NonTerminal.DRAW])
     ]),
-  Rule("<action>", [
-      Alternative(["bar", "<x>", "<y>", ",", "<y>"]),
-      Alternative(["line", "<x>", "<y>", ",", "<x>", "<y>"]),
-      Alternative(["fill", "<x>", "<y>"])
+  Rule(NonTerminal.ACTION, [
+      Alternative([
+        Terminal.BAR, NonTerminal.X, NonTerminal.Y, Terminal.COMMA, NonTerminal.Y
+      ]),
+      Alternative([
+        Terminal.LINE, NonTerminal.X, NonTerminal.Y, Terminal.COMMA, NonTerminal.X,
+        NonTerminal.Y
+      ]),
+      Alternative([Terminal.FILL, NonTerminal.X, NonTerminal.Y])
     ]),
-  Rule("<x>", [
-      Alternative(["A"]),
-      Alternative(["B"]),
-      Alternative(["C"]),
-      Alternative(["D"]),
-      Alternative(["E"])
+  Rule(NonTerminal.X, [
+      Alternative([Terminal.A]),
+      Alternative([Terminal.B]),
+      Alternative([Terminal.C]),
+      Alternative([Terminal.D]),
+      Alternative([Terminal.E])
     ]),
-  Rule("<y>", [
-      Alternative(["1"]),
-      Alternative(["2"]),
-      Alternative(["3"]),
-      Alternative(["4"]),
-      Alternative(["5"])
+  Rule(NonTerminal.Y, [
+      Alternative([Terminal.ONE]),
+      Alternative([Terminal.TWO]),
+      Alternative([Terminal.THREE]),
+      Alternative([Terminal.FOUR]),
+      Alternative([Terminal.FIVE])
     ])
 ];
