@@ -1,6 +1,6 @@
 // The print module contains printing functions for introdction, grammar, etc.
 
-module print;
+module utility.print;
 
 import syntax.grammar;
 

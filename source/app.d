@@ -1,15 +1,15 @@
 // Main program
 
-import print;
 import syntax.grammar;
+import utility.print;
 
 import std.stdio;
 import std.string;
 
 void main()
 {
-	print.introduction();
-	print.grammar(rules);
+	utility.print.introduction();
+	utility.print.grammar(rules);
 
 	// continually prompt for input
 	while (true)
