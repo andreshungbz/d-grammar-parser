@@ -9,7 +9,7 @@ import std.string;
 void main()
 {
 	utility.print.introduction();
-	utility.print.grammar(rules);
+	utility.print.grammar(syntax.grammar.rules);
 
 	// continually prompt for input
 	while (true)
