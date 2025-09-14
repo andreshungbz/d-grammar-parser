@@ -11,16 +11,16 @@ import syntax.grammar;
  */
 void introduction()
 {
-  string[string] programIntroEntries = [
-    "[d-grammar-parser]": "Simple lexical/syntax analyzer written in D",
-    "[GitHub]": "https://github.com/andreshungbz/d-grammar-parser"
+  import std.typecons : tuple;
+
+  auto programIntroEntries = [
+    tuple("[d-grammar-parser]", "Simple lexical/syntax analyzer written in D"),
+    tuple("[GitHub]", "https://github.com/andreshungbz/d-grammar-parser")
   ];
 
-  // print entries in order
-  string[] orderedKeys = ["[d-grammar-parser]", "[GitHub]"];
-  foreach (key; orderedKeys)
+  foreach (entry; programIntroEntries)
   {
-    writeln(format("%-20s %-50s", key, programIntroEntries[key]));
+    writeln(format("%-20s %-50s", entry[0], entry[1]));
   }
 
   writeln();
