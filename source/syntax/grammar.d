@@ -20,7 +20,7 @@ struct Alternative
     {
       // no space before comma or at start, and no space between <x><y>
       if (i > 0 && sym != "," && symbols[i - 1] != ","
-        && !((symbols[i - 1] == "<x>" && sym == "<y>")))
+        && !(symbols[i - 1] == "<x>" && sym == "<y>"))
         result ~= " ";
       result ~= sym;
     }
