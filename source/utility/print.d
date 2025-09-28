@@ -27,7 +27,7 @@ void displayGrammar()
 {
   import bnf.grammar : rules;
 
-  writefln("[BNF/Context-free Grammar]");
+  writeln("[BNF/Context-free Grammar]");
   writeln(format("%-15s %-5s %-50s", "[Non-Terminal]", "-->", "[Derivation]"));
 
   foreach (rule; rules)
