@@ -1,17 +1,16 @@
 // Main program
 
-import language.grammar;
-import utility.print;
+import utility.print : displayProgramInformation, displayGrammar;
 
 import std.stdio;
 import std.string;
 
 void main()
 {
-	utility.print.introduction();
-	utility.print.grammar(language.grammar.rules);
+	displayProgramInformation();
+	displayGrammar();
 
-	// continually prompt for input
+	// program loop
 	while (true)
 	{
 		write("Enter input ('END' to exit): ");
