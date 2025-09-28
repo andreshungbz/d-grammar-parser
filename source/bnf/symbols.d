@@ -8,19 +8,24 @@ enum Terminal : string
   BAR = "bar",
   LINE = "line",
   FILL = "fill",
+
   SEMICOLON = ";",
   COMMA = ",",
+
   A = "A",
   B = "B",
   C = "C",
   D = "D",
   E = "E",
+
   ONE = "1",
   TWO = "2",
   THREE = "3",
   FOUR = "4",
   FIVE = "5",
-  EOF = "<EOF>" // indicates where parsing ends
+
+  EOF = "<EOF>", // indicates where parsing ends
+  ERROR = "<ERROR>" // error to indicate invalid lexeme
 }
 
 enum NonTerminal : string
@@ -56,3 +61,16 @@ struct Symbol
     return value;
   }
 }
+
+// terminalFromString is an associate array mapping strings to their enum types
+immutable Terminal[string] terminalFromString =
+{
+  import std.traits : EnumMembers;
+
+  Terminal[string] map;
+  foreach (t; EnumMembers!Terminal)
+  {
+    map[t] = t;
+  }
+  return map;
+}();
