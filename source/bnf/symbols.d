@@ -19,7 +19,8 @@ enum Terminal : string
   TWO = "2",
   THREE = "3",
   FOUR = "4",
-  FIVE = "5"
+  FIVE = "5",
+  EOF = "<EOF>" // indicates where parsing ends
 }
 
 enum NonTerminal : string
