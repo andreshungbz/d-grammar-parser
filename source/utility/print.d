@@ -32,7 +32,7 @@ void displayGrammar()
 
   foreach (rule; rules)
   {
-    writeln(format("%-15s %-5s %-50s", rule.nonTerminal, "-->", rule.alternativesToString()));
+    writeln(format("%-15s %-5s %-50s", cast(string) rule.nonTerminal, "-->", rule.alternativesToString()));
   }
 
   writeln();
