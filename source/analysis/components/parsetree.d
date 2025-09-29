@@ -23,7 +23,7 @@ struct LayoutInfo
   int depth;
   string label; // Node label (e.g., "<x>", "bar")
   int labelLength;
-  string lexemeValue; // Lexeme value (e.g., "(D)", null)
+  string lexemeValue; // Lexeme value (e.g., "D", "2")
   int lexemeLength;
   int contentWidth; // max(labelLength, lexemeLength)
 }
@@ -38,7 +38,7 @@ private string getLabel(ParseNode node)
   return node.symbol.value;
 }
 
-/// Gets the lexeme value in parentheses (e.g., "(D)", or null).
+/// Gets the lexeme value (e.g., "D", "2", or null).
 private string getLexemeValue(ParseNode node)
 {
   if (node.children.length == 0 && node.token.lexeme.length > 0)
@@ -48,8 +48,8 @@ private string getLexemeValue(ParseNode node)
       Terminal.LINE, Terminal.COMMA, Terminal.SEMICOLON
     ];
 
-    if (!canFind(skipLexeme, node.token.kind))
-      return "(" ~ node.token.lexeme ~ ")";
+    if (!canFind(skipLexeme, node.token.kind)) // MODIFIED: Removed parentheses around node.token.lexeme
+      return node.token.lexeme;
   }
   return null;
 }
@@ -152,7 +152,7 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
 
   // 2. Draw Vertical Stem (y+1) 
   // Draw this if the node has a lexeme OR if it has children (i.e., it's a non-leaf internal node)
-  if (info.lexemeValue !is null || node.children.length > 0) // <-- ADDED node.children.length > 0
+  if (info.lexemeValue !is null || node.children.length > 0)
   {
     if (y + 1 < grid.length && contentCenter < grid[0].length)
     {
@@ -195,7 +195,7 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
     int cw = layoutCache[child].width;
     int childCenter = childStart + (cw - 1) / 2;
 
-    // Draw horizontal line (y+2)
+    // Draw horizontal line (y+2) - using underscores and asterisks
     if (y + 2 < grid.length)
     {
       // Draw horizontal line using UNDERSCORE (_)
