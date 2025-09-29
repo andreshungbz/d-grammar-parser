@@ -1,4 +1,4 @@
-// The print module contains printing functions for introdction, grammar, etc.
+// utility.prind contains printing functions for introdction and grammar
 module utility.print;
 
 import std.format;
