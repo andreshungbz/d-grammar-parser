@@ -22,6 +22,20 @@ class Lexer
 
   // INTERFACING FUNCTIONS
 
+  /// Returns all tokens in the input as an array, including errors and EOF
+  Token[] tokenizeAll()
+  {
+    Token[] tokens;
+    while (true)
+    {
+      auto tok = nextToken();
+      if (tok.kind == Terminal.EOF)
+        break; // stop before appending EOF
+      tokens ~= tok;
+    }
+    return tokens;
+  }
+
   /// nextToken consumes the next token in the string input
   Token nextToken()
   {
@@ -54,15 +68,6 @@ class Lexer
 
     // we got neither a valid keyword or valid single-character terminal, so return an error Token
     return Token(Terminal.ERROR, c.to!string, position++);
-  }
-
-  /// peek shows the next token without consuming it
-  Token peek()
-  {
-    auto currentPosition = position;
-    auto token = nextToken();
-    position = currentPosition;
-    return token;
   }
 
   // PRIVATE UTILTIY FUNCTIONS

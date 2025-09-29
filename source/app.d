@@ -1,13 +1,10 @@
 // Main program
 
 import utility.print : displayProgramInformation, displayGrammar;
-import analysis.lexer : Lexer;
-import analysis.components.token : Token;
-import bnf.symbols : Terminal;
+import analysis.parser : Parser;
 
 import std.stdio;
 import std.string;
-import std.conv : to;
 
 void main()
 {
@@ -26,18 +23,17 @@ void main()
 			break;
 		}
 
-		// create lexer
-		auto lexer = new Lexer(input);
+		auto parser = new Parser(input);
+		parser.parse();
 
-		// iterate tokens until EOF
-		Token tok;
-		do
-		{
-			tok = lexer.nextToken();
-			writeln("Token(kind: ", tok.kind,
-				", lexeme: \"", tok.lexeme, "\"",
-				", position: ", tok.startPosition.to!string, ")");
-		}
-		while (tok.kind != Terminal.EOF);
+		pressAnyKey();
 	}
+}
+
+void pressAnyKey()
+{
+	import std.stdio;
+
+	write("Press Enter to continue...");
+	readln(); // Waits for the user to press Enter
 }
