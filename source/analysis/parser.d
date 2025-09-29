@@ -14,7 +14,6 @@ class Parser
   // data members
 
   private Token[] tokens; // obtained from the lexical analyzer
-  private size_t pos = 0;
 
   private ParseNode root; // parse tree to be built
 
@@ -67,7 +66,6 @@ class Parser
       printParseTree(root);
       writeln();
     }
-
   }
 
   // PARSING FUNCTIONS FOR RECURSIVE-DESCENT PARSING
@@ -107,6 +105,30 @@ class Parser
     if (error.length > 0)
       return node;
 
+    // edge case: leftover tokens after <draw>
+    foreach (i; first + 1 .. last)
+    {
+      bool used = false;
+
+      void checkNode(ParseNode n)
+      {
+        // skip error tokens
+        if (!used && n.token.kind != Terminal.ERROR && n.token is tokens[i])
+          used = true;
+
+        foreach (c; n.children)
+          checkNode(c);
+      }
+
+      checkNode(drawNode);
+
+      if (!used)
+      {
+        error = formatError("<draw>", "no extra tokens", tokens[i].lexeme);
+        return node;
+      }
+    }
+
     // PARSE TREE NODE - add BYE
     auto byeNode = new ParseNode(Symbol.T(tokens[last].kind), tokens[last]);
     node.addChild(byeNode);
@@ -124,7 +146,7 @@ class Parser
     // RULE DETERMINATION - checking ;
     size_t semicolonPos = first;
     bool hasSemicolon = false;
-    for (; semicolonPos < last; semicolonPos++)
+    for (; semicolonPos <= last; semicolonPos++)
     {
       if (tokens[semicolonPos].kind == Terminal.SEMICOLON)
       {
@@ -235,12 +257,23 @@ class Parser
 
     size_t posAction = first + 1; // advance past the bar/line/fill token
 
+    if (posAction > last) // edge case: end of input
+    {
+      error = formatError("<action>", "<x>", "EOF");
+      return node;
+    }
+
     // RECURSIVE PARSE - <x><y> (common to all actions)
     auto xNode1 = parseX(posAction);
     node.addChild(xNode1);
     if (error.length > 0)
       return node;
     posAction++;
+    if (posAction > last) // edge case: end of input
+    {
+      error = formatError("<action>", "<y>", "EOF");
+      return node;
+    }
     auto yNode1 = parseY(posAction);
     node.addChild(yNode1);
     if (error.length > 0)
@@ -313,7 +346,7 @@ class Parser
     // PARSE TREE NODE - create <x>
     auto node = new ParseNode(Symbol.NT(NonTerminal.X), tokens[posX]);
 
-    if (posX >= tokens.length)
+    if (posX >= tokens.length) // edge case: end of input
     {
       error = formatError("<x>", "A..E", "EOF");
       return node;
@@ -359,7 +392,7 @@ class Parser
       return node;
     }
 
-    // DERIVATION RECORDING - <x>
+    // DERIVATION RECORDING - <y>
     currentSententialForm = replaceFirst(currentSententialForm, "<y>", tok.lexeme);
     derivations ~= currentSententialForm;
 
