@@ -444,8 +444,8 @@ class Parser
       nonterminal, expected, got);
   }
 
-  /// printParseTree recursively constructs a horizontal parse tree for the successful derivation of an input
-  /// pre-order depth-first traversal is used
+  /// printParseTree recursively constructs a vertical parse tree for the successful derivation of an input
+  /// post-order depth-first traversal is used
   private void printParseTree()
   {
     import analysis.components.parsetree : printVerticalTree;

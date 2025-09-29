@@ -1,44 +1,41 @@
+/// analysis.components.parsetree implements printing the vertical parse tree
+/// the parse tree is navigated with post-order traveral
 module analysis.components.parsetree;
 
-import std.algorithm.searching : canFind;
-import std.stdio : writeln, write;
 import std.algorithm : map, reduce, max, min;
+import std.algorithm.searching : canFind;
 import std.array : array, appender;
-import std.string;
 import std.conv : to;
+import std.stdio : writeln, write;
+import std.string;
 
-// Re-import necessary components from other modules
 import analysis.components.parsenode : ParseNode;
 import bnf.symbols : Symbol, Terminal, NonTerminal;
 
-// --- Constants for Tree Layout ---
+// constants
 private enum int SIBLING_SPACING = 3;
-// Node(y), LexemeStem/Stem(y+1), HLine(y+2), Lexeme(y+3), ChildStem(y+4)
 private enum int LEVEL_HEIGHT = 5;
-
-// --- Node Metadata Cache ---
+// node layout
 struct LayoutInfo
 {
   int width;
   int depth;
-  string label; // Node label (e.g., "<x>", "bar")
+  string label;
   int labelLength;
-  string lexemeValue; // Lexeme value (e.g., "D", "2")
+  string lexemeValue;
   int lexemeLength;
-  int contentWidth; // max(labelLength, lexemeLength)
+  int contentWidth;
 }
 
 private LayoutInfo[ParseNode] layoutCache;
 
-// --- Helper Functions ---
+// helper functions
 
-/// Gets the primary node label (e.g., "<x>", "bar").
 private string getLabel(ParseNode node)
 {
   return node.symbol.value;
 }
 
-/// Gets the lexeme value (e.g., "D", "2", or null).
 private string getLexemeValue(ParseNode node)
 {
   if (node.children.length == 0 && node.token.lexeme.length > 0)
@@ -48,13 +45,12 @@ private string getLexemeValue(ParseNode node)
       Terminal.LINE, Terminal.COMMA, Terminal.SEMICOLON
     ];
 
-    if (!canFind(skipLexeme, node.token.kind)) // MODIFIED: Removed parentheses around node.token.lexeme
+    if (!canFind(skipLexeme, node.token.kind))
       return node.token.lexeme;
   }
   return null;
 }
 
-// --- Traversal 1 & 2: Measure Width and Depth ---
 private int measureWidth(ParseNode node)
 {
   if (auto cached = node in layoutCache)
@@ -73,7 +69,6 @@ private int measureWidth(ParseNode node)
   int w;
   if (node.children.length == 0)
   {
-    // Leaf node needs padding around its widest content for centering and stems
     w = max(contentW + 2, 3);
     layoutCache[node] = LayoutInfo(w, 0, lbl, lblLen, lex, lexLen, contentW);
     return w;
@@ -91,7 +86,6 @@ private int measureWidth(ParseNode node)
     sumWidth += cw;
   }
 
-  // Ensure parent node's width covers its content centered over the children
   w = max(sumWidth, contentW + 2);
 
   layoutCache[node] = LayoutInfo(w, 0, lbl, lblLen, lex, lexLen, contentW);
@@ -125,8 +119,6 @@ private int measureDepth(ParseNode node)
   return d;
 }
 
-// --- Traversal 3: Render to Grid (Pre-order/Top-Down) ---
-
 private int render(ref char[][] grid, ParseNode node, int startX, int y)
 {
   auto info = layoutCache[node];
@@ -137,10 +129,8 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
   if (w <= 0)
     return 0;
 
-  // The center of the content (label/lexeme) within the allocated width
   int contentCenter = startX + (w - 1) / 2;
 
-  // 1. Draw Node Label (y)
   int labelX = contentCenter - (lblLen - 1) / 2;
   for (int i = 0; i < lblLen; i++)
   {
@@ -150,8 +140,6 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
     }
   }
 
-  // 2. Draw Vertical Stem (y+1) 
-  // Draw this if the node has a lexeme OR if it has children (i.e., it's a non-leaf internal node)
   if (info.lexemeValue !is null || node.children.length > 0)
   {
     if (y + 1 < grid.length && contentCenter < grid[0].length)
@@ -160,7 +148,6 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
     }
   }
 
-  // 3. Draw Lexeme Value (y+3) 
   if (info.lexemeValue !is null)
   {
     int lexX = contentCenter - (lexLen - 1) / 2;
@@ -176,10 +163,9 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
 
   if (node.children.length == 0)
   {
-    return w; // Leaf node, nothing more to draw
+    return w;
   }
 
-  // 4. Draw Connectors and Recurse
   int parentCenter = contentCenter;
   int childStart = startX;
 
@@ -195,10 +181,8 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
     int cw = layoutCache[child].width;
     int childCenter = childStart + (cw - 1) / 2;
 
-    // Draw horizontal line (y+2) - using underscores and asterisks
     if (y + 2 < grid.length)
     {
-      // Draw horizontal line using UNDERSCORE (_)
       for (int pos = min(parentCenter, childCenter); pos <= max(parentCenter, childCenter);
         pos++)
       {
@@ -206,31 +190,26 @@ private int render(ref char[][] grid, ParseNode node, int startX, int y)
           grid[y + 2][pos] = '_';
       }
 
-      // Draw connection points (y+2) using ASTERISK (*)
       if (parentCenter < grid[0].length)
         grid[y + 2][parentCenter] = '*';
       if (childCenter < grid[0].length)
         grid[y + 2][childCenter] = '*';
     }
 
-    // Draw vertical stem down from horizontal line (y+4) 
-    // This is the connection point for the child's entire subtree
     if (y + 4 < grid.length && childCenter < grid[0].length)
     {
       grid[y + 4][childCenter] = '|';
     }
 
-    // Recurse to render the child's subtree, starting at the next full level
     render(grid, child, childStart, y + LEVEL_HEIGHT);
 
-    // Advance childStart for the next sibling's start position
     childStart += cw;
   }
 
   return w;
 }
 
-// --- Main Printing Function ---
+// main printing function
 
 void printVerticalTree(ParseNode root)
 {
@@ -269,7 +248,6 @@ void printVerticalTree(ParseNode root)
 
     int trimLen = cast(int) s.length;
 
-    // Find the index of the last non-space character
     int lastCharIndex = -1;
     for (int j = 0; j < trimLen; j++)
     {
@@ -279,10 +257,8 @@ void printVerticalTree(ParseNode root)
       }
     }
 
-    // Only print if the line contains any non-space character
     if (lastCharIndex != -1)
     {
-      // Set trimLen to one position past the last character found
       trimLen = lastCharIndex + 1;
       writeln(s[0 .. trimLen]);
     }
