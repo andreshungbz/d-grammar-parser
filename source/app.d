@@ -1,7 +1,9 @@
-// Main program
+// app.d contains the main driver program that continuously prompts
+// the user for input strings and attempts to show derivations and the
+// parse tree according to the program BNF grammar.
 
-import utility.print : displayProgramInformation, displayGrammar;
 import analysis.parser : Parser;
+import utility.print : displayProgramInformation, displayGrammar;
 
 import std.stdio;
 import std.string;
@@ -11,29 +13,22 @@ void main()
 	displayProgramInformation();
 	displayGrammar();
 
-	// program loop
+	// main program loop
 	while (true)
 	{
 		write("Enter input ('END' to exit): ");
 		string input = strip(readln());
 
-		// break condition on "END"
+		// exit program on "END"
 		if (input == "END")
-		{
 			break;
-		}
 
+		// send the input to the syntax analyzer to attempt parsing
 		auto parser = new Parser(input);
 		parser.parse();
 
-		pressAnyKey();
+		// prompt for key before asking for another input
+		write("Press [Enter] to continue...");
+		readln();
 	}
-}
-
-void pressAnyKey()
-{
-	import std.stdio;
-
-	write("Press Enter to continue...");
-	readln(); // Waits for the user to press Enter
 }
