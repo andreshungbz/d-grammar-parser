@@ -1,4 +1,6 @@
-// analysis.lexer implements the lexical analyzer of the program through a Lexer class
+/// analysis.lexer implements the lexical analyzer of the program through a Lexer class
+/// it examines lexical units and provides an array of Tokens to the syntax analyzer
+/// invalid token errors are later handled by the syntax analyzer
 module analysis.lexer;
 
 import analysis.components.token : Token;
@@ -10,19 +12,18 @@ import std.typecons : Nullable;
 class Lexer
 {
   // data members
-  private string input; // the string to examine for lexemes/tokens
-  private size_t position; // tracks where the next input will be read from
+  private string input; // input string
+  private size_t position = 0; // position of input string
 
   // constructor
   this(string source)
   {
     input = source;
-    position = 0;
   }
 
   // INTERFACING FUNCTIONS
 
-  /// Returns all tokens in the input as an array, including errors and EOF
+  /// tokenizeAll returns all tokens in the input as an array, including Terminal.ERROR, but excluding Terminal.EOF
   Token[] tokenizeAll()
   {
     Token[] tokens;
@@ -30,27 +31,27 @@ class Lexer
     {
       auto tok = nextToken();
       if (tok.kind == Terminal.EOF)
-        break; // stop before appending EOF
+        break;
       tokens ~= tok;
     }
     return tokens;
   }
 
+  // PRIVATE UTILTIY FUNCTIONS
+
   /// nextToken consumes the next token in the string input
-  Token nextToken()
+  private Token nextToken()
   {
     import std.conv : to;
 
-    skipWhitespace();
+    skipWhitespace(); // clear whitespace
 
-    // if at the end of the string input, return the EOF token
-    if (position >= input.length)
+    if (position >= input.length) // end of input string
       return Token(Terminal.EOF, "", position);
 
-    // retrieve character
-    char c = input[position];
+    char c = input[position]; // get character to check
 
-    // if we get a valid keyword terminal, return it
+    // return keyword terminal if valid
     auto kwTok = lookupKeyword();
     if (!kwTok.isNull)
     {
@@ -58,7 +59,7 @@ class Lexer
       return kwTok.get;
     }
 
-    // if we get a valid single-character terminal, return it
+    // return single-character terminal if valid
     auto singleTok = lookupSingleChar();
     if (!singleTok.isNull)
     {
@@ -66,13 +67,11 @@ class Lexer
       return singleTok.get;
     }
 
-    // we got neither a valid keyword or valid single-character terminal, so return an error Token
+    // otherwise return an invalid lexeme
     return Token(Terminal.ERROR, c.to!string, position++);
   }
 
-  // PRIVATE UTILTIY FUNCTIONS
-
-  /// skipWhitespace removes Unicode-aware whitespace characters
+  /// skipWhitespace removes whitespace characters such as spaces
   private void skipWhitespace()
   {
     import std.uni : isWhite;
@@ -81,18 +80,18 @@ class Lexer
       position++;
   }
 
-  /// lookupKeyword returns a Token or null using startsWith
+  /// lookupKeyword returns a keyword Token or a null value (std.typecons : Nullable)
   private Nullable!Token lookupKeyword()
   {
     import bnf.symbols : terminalFromString;
-    import std.string : startsWith;
 
     import std.conv : to;
+    import std.string : startsWith;
 
     string[] keywords = ["HI", "BYE", "bar", "line", "fill"];
-
     foreach (kw; keywords)
     {
+      // return appropriate Token if valid
       if (input[position .. $].startsWith(kw)) // examine slice from position to end
       {
         auto tok = Token(terminalFromString.get(kw, Terminal.EOF), kw, position);
@@ -100,36 +99,28 @@ class Lexer
       }
     }
 
-    // not found
+    // otherwise return a null value
     return Nullable!Token.init;
   }
 
-  /// lookupSingleChar returns a Token or null by examining the individual valid characters
+  /// lookupSingleChar returns a single-cahracter Token or a null value (std.typecons : Nullable)
   private Nullable!Token lookupSingleChar()
   {
     import bnf.symbols : terminalFromString;
 
     import std.conv : to;
 
-    char c = input[position];
+    char c = input[position]; // get character to check
 
-    // punctuation terminals
-    if (c == ';' || c == ',')
+    // return appropriate Token if valid
+    if (c == ';' || c == ',') // punctuation terminals
+      return Nullable!Token(Token(terminalFromString.get(c.to!string, Terminal.EOF), c.to!string, position));
+    if (c >= 'A' && c <= 'E') // X terminals (A-E)
+      return Nullable!Token(Token(terminalFromString.get(c.to!string, Terminal.EOF), c.to!string, position));
+    if (c >= '1' && c <= '5') // Y terminals (1-5)
       return Nullable!Token(Token(terminalFromString.get(c.to!string, Terminal.EOF), c.to!string, position));
 
-    // X terminals (A-E)
-    if (c >= 'A' && c <= 'E')
-    {
-      return Nullable!Token(Token(terminalFromString.get(c.to!string, Terminal.EOF), c.to!string, position));
-    }
-
-    // Y terminals (1-5)
-    if (c >= '1' && c <= '5')
-    {
-      return Nullable!Token(Token(terminalFromString.get(c.to!string, Terminal.EOF), c.to!string, position));
-    }
-
-    // not found
+    // otherwise return a null value
     return Nullable!Token.init;
   }
 }
