@@ -63,7 +63,7 @@ class Parser
     else
     {
       writeln("[Parse Tree]");
-      printParseTree(root);
+      printParseTree();
       writeln();
     }
   }
@@ -446,39 +446,42 @@ class Parser
 
   /// printParseTree recursively constructs a horizontal parse tree for the successful derivation of an input
   /// pre-order depth-first traversal is used
-  private void printParseTree(ParseNode node, string prefix = "", bool last = true, bool isRoot = true)
+  private void printParseTree()
   {
-    import std.algorithm.searching : canFind;
-    import std.stdio : writeln;
+    import analysis.components.parsetree : printVerticalTree;
 
-    // don't repeat for keyword and punctuation terminals
-    string lexemeSuffix = "";
-    if (node.children.length == 0 && node.token.lexeme.length > 0)
-    {
-      immutable skipLexeme = [
-        Terminal.HI,
-        Terminal.BYE,
-        Terminal.BAR,
-        Terminal.FILL,
-        Terminal.LINE,
-        Terminal.COMMA,
-        Terminal.SEMICOLON
-      ];
+    printVerticalTree(root);
+    // import std.algorithm.searching : canFind;
+    // import std.stdio : writeln;
 
-      if (!canFind(skipLexeme, node.token.kind))
-        lexemeSuffix = " (" ~ node.token.lexeme ~ ")";
-    }
+    // // don't repeat for keyword and punctuation terminals
+    // string lexemeSuffix = "";
+    // if (node.children.length == 0 && node.token.lexeme.length > 0)
+    // {
+    //   immutable skipLexeme = [
+    //     Terminal.HI,
+    //     Terminal.BYE,
+    //     Terminal.BAR,
+    //     Terminal.FILL,
+    //     Terminal.LINE,
+    //     Terminal.COMMA,
+    //     Terminal.SEMICOLON
+    //   ];
 
-    if (isRoot) // only print └── / ├── if not root
-      writeln(node.symbol.value);
-    else
-      writeln(prefix, last ? "└── " : "├── ", node.symbol.value, lexemeSuffix);
+    //   if (!canFind(skipLexeme, node.token.kind))
+    //     lexemeSuffix = " (" ~ node.token.lexeme ~ ")";
+    // }
 
-    // construct next prefix then travese each of the node's children recursively
-    string newPrefix = prefix ~ (last ? "    " : "│   ");
-    foreach (i, child; node.children)
-    {
-      printParseTree(child, newPrefix, i == node.children.length - 1, false);
-    }
+    // if (isRoot) // only print └── / ├── if not root
+    //   writeln(node.symbol.value);
+    // else
+    //   writeln(prefix, last ? "└── " : "├── ", node.symbol.value, lexemeSuffix);
+
+    // // construct next prefix then travese each of the node's children recursively
+    // string newPrefix = prefix ~ (last ? "    " : "│   ");
+    // foreach (i, child; node.children)
+    // {
+    //   printParseTree(child, newPrefix, i == node.children.length - 1, false);
+    // }
   }
 }
