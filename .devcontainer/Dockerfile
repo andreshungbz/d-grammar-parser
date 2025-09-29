@@ -11,8 +11,8 @@ RUN wget https://netcologne.dl.sourceforge.net/project/d-apt/files/d-apt.list -O
     && apt-get update --allow-insecure-repositories \
     && apt-get -y --allow-unauthenticated install --reinstall d-apt-keyring
 
-# Install dmd, ldc, and dub
-RUN apt-get update && apt-get install -y dmd-compiler dub ldc
+# Install dmd and dub
+RUN apt-get update && apt-get install -y dmd-compiler dub
 
 # Install gdb and lldb for debugging
 RUN apt-get install -y gdb lldb
