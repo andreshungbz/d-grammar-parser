@@ -1,4 +1,5 @@
 /// bnf.rule defines structures for the RHS (Alternative) and LHS (Rule) of the BNF grammar
+/// these are mainly used for printing the grammar
 module bnf.rule;
 
 import bnf.symbols;

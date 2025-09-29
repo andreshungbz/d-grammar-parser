@@ -1,10 +1,12 @@
 /// bnf.grammar defines the grammar rules according to the program specifications
+/// these are only used for printing the grammar
 module bnf.grammar;
 
-import bnf.symbols : Terminal, NonTerminal, Symbol;
 import bnf.rule : Rule, Alternative;
+import bnf.symbols : Terminal, NonTerminal, Symbol;
 
 Rule[] rules = [
+  // <graph> --> HI <draw> BYE
   Rule(
     NonTerminal.GRAPH,
     [
@@ -15,6 +17,7 @@ Rule[] rules = [
       ])
     ]
   ),
+  // <draw> --> <action> | <action> ; <draw> 
   Rule(
     NonTerminal.DRAW,
     [
@@ -26,6 +29,7 @@ Rule[] rules = [
       ])
     ]
   ),
+  // <action> --> bar <x><y>,<y> | line <x><y>,<x><y> | fill <x><y> 
   Rule(
     NonTerminal.ACTION,
     [
@@ -51,6 +55,7 @@ Rule[] rules = [
       ])
     ]
   ),
+  // <x> --> A | B | C | D | E
   Rule(
     NonTerminal.X,
     [
@@ -61,6 +66,7 @@ Rule[] rules = [
       Alternative([Symbol.T(Terminal.E)])
     ]
   ),
+  // <y> --> 1 | 2 | 3 | 4 | 5
   Rule(
     NonTerminal.Y,
     [
