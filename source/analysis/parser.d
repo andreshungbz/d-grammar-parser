@@ -52,7 +52,7 @@ class Parser
     // print derivations
     // in the case of errors, the last derivation printed is the one where the error occurred
     writeln("\n[Derivations]");
-    printDerivations();
+    printDerivations(error.length == 0);
     writeln();
 
     // report error if it exists, otherwise print the parse tree
@@ -402,24 +402,30 @@ class Parser
   // PRIVATE UTILITY FUNCTIONS
 
   /// printDerivations loops through derivations data member, printing each numbererd sentential form
-  private void printDerivations()
+  private void printDerivations(bool useFinalF)
   {
     import std.format : format;
     import std.stdio : writeln;
 
     size_t derivationCounter = 1;
-    foreach (d; derivations)
+    size_t total = derivations.length;
+    foreach (i, d; derivations)
     {
-      auto numStr = format("%02d", derivationCounter++); // for single digits, append 0
+      bool isLast = (i == total - 1);
+      string numStr = format("%02d", derivationCounter++); // for single digits, append 0
+      if (useFinalF && isLast)
+      {
+        numStr ~= " (Final)";
+      }
 
       if (!firstDerivationPrinted) // print <graph> only on the first derivation
       {
-        writeln(format("%-4s %-10s %-5s %s", numStr, "<graph>", "-->", d));
+        writeln(format("%-10s %-8s %-5s %s", numStr, "<graph>", "-->", d));
         firstDerivationPrinted = true;
       }
       else
       {
-        writeln(format("%-4s %-10s %-5s %s", numStr, "", "-->", d));
+        writeln(format("%-10s %-8s %-5s %s", numStr, "", "-->", d));
       }
     }
   }
