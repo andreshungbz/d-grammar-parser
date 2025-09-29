@@ -1,3 +1,4 @@
+/// analysis.componens.parsenode defines the ParseNode struct used to generate the parse tree
 module analysis.components.parsenode;
 
 import analysis.components.token : Token;
@@ -9,6 +10,7 @@ class ParseNode
   Token token;
   ParseNode[] children;
 
+  // constructor
   this(Symbol symbol, Token token = Token.init)
   {
     this.symbol = symbol;
