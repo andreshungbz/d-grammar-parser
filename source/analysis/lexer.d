@@ -8,7 +8,6 @@ import bnf.symbols : Terminal;
 
 import std.typecons : Nullable;
 
-/// the Lexer class stores the string data and provides functions for getting the nextToken and peeking it
 class Lexer
 {
   // data members
