@@ -11,11 +11,12 @@ import std.string;
 void main()
 {
 	displayProgramInformation();
-	displayGrammar();
 
 	// main program loop
 	while (true)
 	{
+		displayGrammar();
+
 		write("Enter input ('END' to exit): ");
 		string input = strip(readln());
 

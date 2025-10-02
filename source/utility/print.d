@@ -18,8 +18,6 @@ void displayProgramInformation()
   {
     writeln(format("%-20s %-50s", entry[0], entry[1]));
   }
-
-  writeln();
 }
 
 /// displayGrammar shows the BNF grammar rules according to the program specifications.
@@ -27,7 +25,7 @@ void displayGrammar()
 {
   import bnf.grammar : rules;
 
-  writeln("[BNF/Context-free Grammar]");
+  writeln("\n[BNF/Context-free Grammar]");
   writeln(format("%-15s %-5s %-50s", "[Non-Terminal]", "-->", "[Derivation]"));
 
   foreach (rule; rules)
